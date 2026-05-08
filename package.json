@@ -1,0 +1,24 @@
+{
+  "name": "turco-manager-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "ISC",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/seedAll.js",
+    "seed:teams": "node src/seedTeams.js",
+    "seed:players": "node src/seedPlayers.js",
+    "seed:fixtures": "node src/seedFixtures.js",
+    "seed:matches": "node src/seedMatches.js",
+    "seed:players-all": "node src/seedPlayersAll.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.19.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.0.0"
+  }
+}
