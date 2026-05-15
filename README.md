@@ -9,9 +9,9 @@ Football manager / teknik direktör simülasyonu.
 
 ## Demo URL
 
-- Frontend demo: `https://YOUR-VERCEL-DEMO.vercel.app`
-- Backend API: `https://YOUR-BACKEND-URL`
-- Health check: `https://YOUR-BACKEND-URL/api/health`
+- Frontend demo: `https://turcomanagerfronted.vercel.app`
+- Backend API: `https://turcomanager-api.onrender.com`
+- Health check: `https://turcomanager-api.onrender.com/api/health`
 
 ## Demo Hesapları
 
@@ -24,9 +24,11 @@ Bu hesaplar sadece demo ortamı içindir.
 | Teknik Direktör | `fb` | `123456` |
 | Teknik Direktör | `bjk` | `123456` |
 
-## Local Development
+---
 
-Backend:
+# Local Development
+
+## Backend
 
 ```bash
 cp .env.example .env
@@ -34,7 +36,7 @@ npm install
 npm run dev
 ```
 
-Frontend:
+## Frontend
 
 ```bash
 cd frontend
@@ -43,7 +45,7 @@ npm install
 npm run dev
 ```
 
-Local vars:
+## Local Environment Variables
 
 ```env
 MONGO_URI=mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/turco-manager
@@ -53,117 +55,192 @@ CLIENT_URL=http://localhost:5173
 VITE_API_URL=http://localhost:5000/api
 ```
 
-## Frontend Vercel Deploy
+---
 
-Vercel project ayarları:
+# Frontend Deploy (Vercel)
 
-- GitHub repo: `https://github.com/tahagurvardar/TurcoManager`
-- Production branch: `main`
-- Root Directory: `frontend`
-- Framework Preset: `Vite`
-- Install Command: `npm install`
-- Build Command: `npm run build`
-- Output Directory: `dist`
+## Vercel Settings
 
-Frontend environment variable:
+- GitHub repo:
+  `https://github.com/tahagurvardar/TurcoManager`
+
+- Production branch:
+  `main`
+
+- Root Directory:
+  `frontend`
+
+- Framework Preset:
+  `Vite`
+
+- Install Command:
+  `npm install`
+
+- Build Command:
+  `npm run build`
+
+- Output Directory:
+  `dist`
+
+## Frontend Environment Variable
 
 ```env
-VITE_API_URL=https://YOUR-BACKEND-URL/api
+VITE_API_URL=https://turcomanager-api.onrender.com/api
 ```
 
-`frontend/vercel.json` Vite SPA deep-link rewrite ve build ayarlarını içerir. GitHub main branch'e her push sonrası Vercel otomatik deployment alır.
+GitHub `main` branch’e her push sonrası Vercel otomatik deployment alır.
 
-## Backend Deploy
+---
 
-Bu backend Express + MongoDB bağlantısı ve simülasyon servisleriyle sürekli çalışan Node servisine daha uygundur. Bu nedenle önerilen demo stratejisi:
+# Backend Deploy (Render)
 
-1. Frontend: Vercel
-2. Backend API: Render veya Railway
-3. Database: MongoDB Atlas
+TurcoManager backend’i sürekli çalışan Node.js servis modeliyle çalışır.
 
-Render için `render.yaml` eklendi.
+Kullanılan production stack:
 
-Render ayarları:
+1. Frontend → Vercel
+2. Backend API → Render
+3. Database → MongoDB Atlas
 
-- Build Command: `npm install`
-- Start Command: `npm start`
-- Health Check Path: `/api/health`
+## Render Settings
 
-Backend environment variables:
+- Build Command:
+
+```bash
+npm install
+```
+
+- Start Command:
+
+```bash
+npm start
+```
+
+- Health Check Path:
+
+```txt
+/api/health
+```
+
+## Backend Environment Variables
 
 ```env
 NODE_ENV=production
 MONGO_URI=mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/turco-manager
 JWT_SECRET=long-random-production-secret
 JWT_EXPIRES_IN=7d
-CLIENT_URL=http://localhost:5173,https://YOUR-VERCEL-DEMO.vercel.app
+CLIENT_URL=http://localhost:5173,https://turco-manager.vercel.app,https://turcomanagerfronted.vercel.app
+PORT=10000
 ```
 
-`PORT` genelde platform tarafından atanır. Local kullanımda `PORT=5000` verilebilir.
+---
 
-## CORS
+# CORS
 
-Backend `CLIENT_URL` değerini virgülle ayrılmış origin listesi olarak okur:
+Backend `CLIENT_URL` değerini virgülle ayrılmış origin listesi olarak okur.
+
+Örnek:
 
 ```env
-CLIENT_URL=http://localhost:5173,https://YOUR-VERCEL-DEMO.vercel.app
+CLIENT_URL=http://localhost:5173,https://turco-manager.vercel.app,https://turcomanagerfronted.vercel.app
 ```
 
-Development modunda localhost Vite originleri otomatik izinlidir. Production'da Vercel domainini `CLIENT_URL` içine ekleyin.
+---
 
-## Demo Seed
+# Demo Seed
 
-Production'da seed otomatik çalışmaz.
+Production ortamında seed otomatik çalışmaz.
 
-Güvenli demo seed komutu:
+## Demo seed çalıştırma
 
 ```bash
 npm run seed:demo
 ```
 
-Bu komut mevcut demo verisi varsa reset yapmadan durur. Bilerek sıfırlamak için:
+## Database resetleyerek seed çalıştırma
 
 ```bash
 npm run seed:demo -- --reset
 ```
 
-Seed içeriği:
+## Seed içeriği
 
 - Takımlar
 - Oyuncular
 - Fikstür
 - Demo maç kayıtları
+- Demo kullanıcı hesapları
 
-Deploy build/start komutlarına seed eklemeyin. Aksi halde her deploy veriyi sıfırlayabilir.
+---
 
-## Required Environment Variables
+# Required Environment Variables
 
-Frontend:
+## Frontend
 
-- `VITE_API_URL`
+```env
+VITE_API_URL
+```
 
-Backend:
+## Backend
 
-- `MONGO_URI`
-- `JWT_SECRET`
-- `JWT_EXPIRES_IN`
-- `CLIENT_URL`
-- `PORT` optional
+```env
+MONGO_URI
+JWT_SECRET
+JWT_EXPIRES_IN
+CLIENT_URL
+PORT
+NODE_ENV
+```
 
-Secrets dosyaya yazılmamalıdır. `.env`, `.env.local` ve frontend env dosyaları `.gitignore` içindedir. Sadece `.env.example` dosyaları commit edilir.
+Secrets hiçbir zaman GitHub’a pushlanmamalıdır.
 
-## Demo Deploy Checklist
+`.env` dosyaları `.gitignore` içindedir.
 
-- MongoDB Atlas cluster oluşturuldu.
-- Backend Render/Railway üzerinde deploy edildi.
-- Backend env vars girildi: `MONGO_URI`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `CLIENT_URL`.
-- Backend health check geçti: `/api/health`.
-- Demo seed bir kez manuel çalıştırıldı: `npm run seed:demo`.
-- Frontend Vercel projesi `frontend` root directory ile bağlandı.
-- Vercel env var girildi: `VITE_API_URL=https://YOUR-BACKEND-URL/api`.
-- Backend `CLIENT_URL` içine Vercel demo domaini eklendi.
-- GitHub `main` push sonrası Vercel otomatik deploy alıyor.
+---
 
-## Notes
+# Demo Deploy Checklist
 
-Backend Vercel serverless'a taşınabilir, fakat bu repo için ana öneri sürekli çalışan Node hostingidir. Express app `src/server.js` içinde export edilir ve import/syntax smoke testleri desteklenir.
+- MongoDB Atlas cluster oluşturuldu
+- Backend Render üzerinde deploy edildi
+- Backend environment variables girildi
+- Frontend Vercel deploy edildi
+- Backend health check başarılı
+- Demo seed çalıştırıldı
+- Frontend backend API’ye bağlı
+- GitHub push sonrası otomatik deploy aktif
+
+---
+
+# Production URLs
+
+## Frontend
+
+```txt
+https://turcomanagerfronted.vercel.app
+```
+
+## Backend API
+
+```txt
+https://turcomanager-api.onrender.com
+```
+
+## Health Check
+
+```txt
+https://turcomanager-api.onrender.com/api/health
+```
+
+---
+
+# Notes
+
+Backend Vercel serverless yapısına taşınabilir ancak TurcoManager için önerilen yapı sürekli çalışan Node.js servisidir.
+
+Express app:
+
+```txt
+src/server.js
+```
+
+üzerinden export edilir ve Render deployment modeliyle uyumludur.
