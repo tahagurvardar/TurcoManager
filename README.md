@@ -246,6 +246,12 @@ src/server.js
 üzerinden export edilir ve Render deployment modeliyle uyumludur.
 
 
+## License
+
+This project is proprietary software.
+
+Unauthorized use, copying, modification, distribution, or commercial usage is strictly prohibited.
+
 Copyright (c) 2026 Taha Gürvardar.
 All rights reserved.
 
