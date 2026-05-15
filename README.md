@@ -244,3 +244,9 @@ src/server.js
 ```
 
 üzerinden export edilir ve Render deployment modeliyle uyumludur.
+
+
+Copyright (c) 2026 Taha Gürvardar.
+All rights reserved.
+
+This source code may not be copied, modified, distributed, sublicensed, or used commercially without explicit permission.
