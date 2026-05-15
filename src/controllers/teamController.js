@@ -1,46 +1,25 @@
-// src/controllers/teamController.js
-const Team = require('../models/Team');
+const { DEFAULT_LEAGUE } = require("../services/accessService");
+const { getManagerStatus, listAdminStatuses, listTeams } = require("../services/teamService");
 
-// Tüm takımları getir
-const getTeams = async (req, res) => {
-  try {
-    const teams = await Team.find().sort({ name: 1 });
-    res.json(teams);
-  } catch (err) {
-    console.error('Takım listeleme hatası:', err);
-    res.status(500).json({ message: 'Sunucu hatası' });
-  }
-};
+async function getTeams(req, res) {
+  const teams = await listTeams({ league: req.query.league });
+  res.json(teams);
+}
 
-// Yeni takım oluştur
-const createTeam = async (req, res) => {
-  try {
-    const { name, shortName, league, budget } = req.body;
+async function getMyTeamStatus(req, res) {
+  const league = req.query.league || DEFAULT_LEAGUE;
+  const status = await getManagerStatus(req.user, league);
+  res.json(status);
+}
 
-    if (!name) {
-      return res.status(400).json({ message: 'Takım ismi zorunludur.' });
-    }
-
-    const existing = await Team.findOne({ name });
-    if (existing) {
-      return res.status(400).json({ message: 'Bu takım zaten kayıtlı.' });
-    }
-
-    const team = await Team.create({
-      name,
-      shortName,
-      league,
-      budget,
-    });
-
-    res.status(201).json(team);
-  } catch (err) {
-    console.error('Takım oluşturma hatası:', err);
-    res.status(500).json({ message: 'Sunucu hatası' });
-  }
-};
+async function getAdminTeamStatus(req, res) {
+  const league = req.query.league || DEFAULT_LEAGUE;
+  const teams = await listAdminStatuses(league);
+  res.json(teams);
+}
 
 module.exports = {
   getTeams,
-  createTeam,
+  getMyTeamStatus,
+  getAdminTeamStatus,
 };

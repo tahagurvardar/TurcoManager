@@ -739,7 +739,8 @@ async function run() {
         league: LEAGUE,
         // xp/form/fitness schema default’larıyla da olur, ama net koyalım:
         xp: 0,
-        form: 100,
+        form: 50,
+        morale: 50,
         fitness: 100,
       });
     }

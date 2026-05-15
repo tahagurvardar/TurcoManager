@@ -1,39 +1,33 @@
-// src/controllers/matchController.js
-const Match = require('../models/Match');
+const {
+  getMatchCenter,
+  listMatches,
+  simulateMatchById,
+  simulateWeek,
+} = require("../services/matchSimulationService");
 
-// Tüm maçları getir
-exports.getMatches = async (req, res) => {
-  try {
-    const matches = await Match.find()
-      .populate('homeTeam', 'name league')
-      .populate('awayTeam', 'name league')
-      .sort({ matchDate: 1 });
+async function getMatches(req, res) {
+  const matches = await listMatches({ league: req.query.league, week: req.query.week });
+  res.json(matches);
+}
 
-    return res.json(matches);
-  } catch (err) {
-    console.error('getMatches hatası:', err);
-    return res.status(500).json({ message: 'Server error' });
-  }
-};
+async function simulateWeekController(req, res) {
+  const result = await simulateWeek({ week: req.query.week, league: req.query.league });
+  res.json(result);
+}
 
-// Yeni maç oluştur
-exports.createMatch = async (req, res) => {
-  try {
-    const { homeTeam, awayTeam, matchDate } = req.body;
+async function simulateMatchController(req, res) {
+  const match = await simulateMatchById(req.params.id);
+  res.json({ message: "Maç simüle edildi.", match });
+}
 
-    if (!homeTeam || !awayTeam || !matchDate) {
-      return res.status(400).json({ message: 'homeTeam, awayTeam ve matchDate zorunlu.' });
-    }
+async function getMatchCenterController(req, res) {
+  const match = await getMatchCenter(req.params.id);
+  res.json(match);
+}
 
-    const match = await Match.create({
-      homeTeam,
-      awayTeam,
-      matchDate,
-    });
-
-    return res.status(201).json(match);
-  } catch (err) {
-    console.error('createMatch hatası:', err);
-    return res.status(500).json({ message: 'Server error' });
-  }
+module.exports = {
+  getMatches,
+  simulateWeekController,
+  simulateMatchController,
+  getMatchCenterController,
 };

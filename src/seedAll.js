@@ -740,9 +740,9 @@ async function run() {
         league,
         country: "Türkiye",
         budget: 0,
-        morale: 100,
-        form: 100,
-        chemistry: 100,
+        morale: 50,
+        form: 50,
+        chemistry: 50,
         fatigue: 0,
       }))
     );

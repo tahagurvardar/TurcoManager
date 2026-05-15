@@ -1,14 +1,11 @@
-// src/config/db.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const { requireEnv } = require("./env");
 
 const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB bağlantısı başarılı:', conn.connection.host);
-  } catch (error) {
-    console.error('MongoDB bağlantı hatası:', error.message);
-    process.exit(1);
-  }
+  const uri = requireEnv("MONGO_URI");
+  const conn = await mongoose.connect(uri);
+  console.log("MongoDB bağlantısı başarılı:", conn.connection.host);
+  return conn;
 };
 
 module.exports = connectDB;

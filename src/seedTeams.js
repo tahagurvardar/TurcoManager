@@ -31,7 +31,7 @@ async function run() {
       "Kayserispor",
       "Karagümrük",
       "Gençlerbirliği",
-    ].map((name) => ({ name, league, country }));
+    ].map((name) => ({ name, league, country, morale: 50, form: 50, chemistry: 50 }));
 
     // Upsert: varsa güncelle, yoksa ekle
     for (const t of teams) {
