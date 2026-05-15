@@ -30,7 +30,16 @@ app.get("/", (req, res) => {
   res.json({
     ok: true,
     name: "Turco Manager Backend",
-    systems: ["auth", "teams", "players", "fixtures", "matches", "standings", "dashboard", "transfers"],
+    systems: [
+      "auth",
+      "teams",
+      "players",
+      "fixtures",
+      "matches",
+      "standings",
+      "dashboard",
+      "transfers",
+    ],
   });
 });
 
@@ -68,9 +77,11 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
   const status = err instanceof HttpError ? err.status : err.status || 500;
+
   if (status >= 500) {
     console.error("Unhandled server error:", err);
   }
+
   res.status(status).json({
     message: err.message || "Server error",
   });
@@ -78,8 +89,12 @@ app.use((err, req, res, next) => {
 
 async function start() {
   await connectDB();
+
   const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`Server çalışıyor: ${PORT}`));
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server çalışıyor: ${PORT}`);
+  });
 }
 
 if (require.main === module) {
